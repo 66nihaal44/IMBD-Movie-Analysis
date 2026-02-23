@@ -11,23 +11,9 @@ for f in files:
   dfs.append(df)
 dfAll = pd.concat(dfs, ignore_index=True)
 print("dfAll shape: ", dfAll.shape)
+dfAll = dfAll.loc[:, ["movie_id", "movie_name", "year", "rating", "votes", "genre"]]
 print("sum: ", dfAll.duplicated().sum())
 dfAll = dfAll.drop_duplicates()
 dfAll = dfAll[dfAll["votes"] >= 1000]
-dfMovies = (
-  dfAll
-  .groupby("movie_id", as_index=False)
-  .agg({
-    "movie_name":"first",
-    "year":"first",
-    "rating":"first",
-    "votes":"first",
-    "genre":lambda x: "|".join(sorted(pd.unique(x)))
-  })
-)
-print(dfMovies["movie_id"].is_unique)
-print("The mean:", dfMovies["genre"].str.contains("\\|").mean())
-print(dfAll.shape, dfMovies.shape)
-dfMovies["genre"] = dfMovies["genre"].str.split("|")
-dfMovies = dfMovies.explode("genre")
-dfMovies.to_csv("data/df_movies.csv", index = False)
+print(dfAll.shape)
+dfAll.to_csv("data/df_movies.csv", index = False)

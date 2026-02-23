@@ -1,9 +1,9 @@
 import pandas as pd
 
-dfMovies = pd.read_csv("data/df_movies.csv")
+dfAll = pd.read_csv("data/df_movies.csv")
 
 genreTrends = (
-  dfMovies.groupby(["year", "genre"])
+  dfAll.groupby(["year", "genre"])
   .agg(
     avgRating=("rating","mean"),
     movieCount=("movie_name","count")

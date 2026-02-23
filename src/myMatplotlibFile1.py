@@ -2,18 +2,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-dfMovies = pd.read_csv("data/df_movies.csv")
+dfAll = pd.read_csv("data/df_movies.csv")
 genreTrends = pd.read_csv("data/genre_trends.csv")
-df = dfMovies.copy()
-df["genre"] = df["genre"].str.split("|")
-df = df.explode("genre")
 topGenres = (
-  df["genre"]
+  dfAll["genre"]
   .value_counts()
   .head(10)
   .index
 )
-filteredMovies = df[df["genre"].isin(topGenres)]
+filteredMovies = dfAll[dfAll["genre"].isin(topGenres)]
 filteredTrends = genreTrends[genreTrends["genre"].isin(topGenres)]
 plt.figure(figsize=(12, 6))
 sns.lineplot(
